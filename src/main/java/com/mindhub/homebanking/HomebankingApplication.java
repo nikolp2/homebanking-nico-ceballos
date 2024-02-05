@@ -21,11 +21,16 @@ public class HomebankingApplication {
 			Client client1 =new Client( "Melba", "Morel", "melba@mindhub.com");
 			Client client2 =new Client( "Sonrisas", "Sonya", "sonrisas@mindhub.com");
 			Client client3 =new Client( "Tentación", "Roberto", "tentacion@mindhub.com");
+			Client client4 =new Client();
+			client4.setFirstName("Pepito");
 
 
-			clientRepository.save(client1);
+            clientRepository.save(client1);
 			clientRepository.save(client2);
 			clientRepository.save(client3);
+			clientRepository.save(client4);
+
+			System.out.println(client4);
 
 		};
 

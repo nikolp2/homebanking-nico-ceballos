@@ -1,17 +1,29 @@
 package com.mindhub.homebanking.Models;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Client {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
-    private long Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "native", strategy = "native")
+
+    private Long Id;
     private String firstName, lastName, mail;
 
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    Set<Account> accounts = new HashSet<>();
+
+
+
     public Client(){};
+
+
 
     public Client(String firstName, String lastName, String mail){
         this.firstName = firstName;
@@ -19,6 +31,18 @@ public class Client {
         this.mail = mail;
     }
 
+    public Set<Account> getAccounts(){
+        return accounts;
+    }
+
+    public void addAccount(Account account){
+        account.setOwner(this);
+        accounts.add(account);
+    }
+
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -43,4 +67,19 @@ public class Client {
     public void setMail(String mail) {
         this.mail = mail;
     }
+
+    public String toString(){
+        return firstName + " " + lastName;
+    }
+
+    /*@Override
+    public String toString() {
+        return "Client{" +
+                "Id=" + Id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", mail='" + mail + '\'' +
+                '}';
+    }*/
+
 }
