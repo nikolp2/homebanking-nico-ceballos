@@ -25,7 +25,7 @@ public class ClientController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<ClientDTO>> getAllClients(){
+    public ResponseEntity<?> getAllClients(){
 
         List<Client> clients = clientRepository.findAll();
 

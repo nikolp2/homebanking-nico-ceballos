@@ -18,7 +18,7 @@ public class Account {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
-    private Client owner;
+    private Client client;
 
     public Account(){};
 
@@ -28,8 +28,17 @@ public class Account {
         this.balance = balance;
     }
 
+    public Client getClient() {
+        return client;
+    }
 
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
+    public Long getId() {
+        return Id;
+    }
 
     public String getNumber() {
         return number;
