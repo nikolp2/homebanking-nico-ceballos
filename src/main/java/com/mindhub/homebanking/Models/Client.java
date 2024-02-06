@@ -11,7 +11,7 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
 
-    private Long Id;
+    private Long id;
     private String firstName, lastName, mail;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
@@ -34,8 +34,9 @@ public class Client {
     }
 
     public void addAccount(Account account){
-        account.setOwner(this);
+        account.setClient(this);
         accounts.add(account);
+
     }
 
     public void setAccounts(Set<Account> accounts) {
@@ -43,7 +44,7 @@ public class Client {
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public String getFirstName() {
@@ -70,18 +71,10 @@ public class Client {
         this.mail = mail;
     }
 
-    public String toString(){
+    /*public String toString(){
         return firstName + " " + lastName;
-    }
-
-    /*@Override
-    public String toString() {
-        return "Client{" +
-                "Id=" + Id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", mail='" + mail + '\'' +
-                '}';
     }*/
+
+
 
 }

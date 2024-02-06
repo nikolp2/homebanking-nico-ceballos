@@ -20,10 +20,6 @@ public class ClientController {
     @Autowired
     private ClientRepository clientRepository;
 
-    public ClientController(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
-    }
-
     @GetMapping("/")
     public ResponseEntity<?> getAllClients(){
 
@@ -34,7 +30,7 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientDTO> getClientById(@PathVariable Long id){
+    public ResponseEntity<?> getClientById(@PathVariable("id") Long id){
         Client client = clientRepository.findById(id).orElse(null);
         if(client == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

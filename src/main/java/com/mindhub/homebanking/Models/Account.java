@@ -9,12 +9,11 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
 
-    private Long Id;
-
+    private Long id;
     private String number;
     private LocalDate creationDate;
 
-    private Double balance;
+    private double balance;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
@@ -28,16 +27,8 @@ public class Account {
         this.balance = balance;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public String getNumber() {
@@ -56,14 +47,19 @@ public class Account {
         this.creationDate = creationDate;
     }
 
-    public Double getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
-    public void setOwner(com.mindhub.homebanking.Models.Client client) {
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }

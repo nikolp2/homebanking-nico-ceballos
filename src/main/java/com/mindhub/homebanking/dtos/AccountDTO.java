@@ -4,12 +4,12 @@ import com.mindhub.homebanking.Models.Account;
 import java.time.LocalDate;
 
 public class AccountDTO {
-    private Long id;
-    private String number;
+   private Long id;
+   private String number;
+   private LocalDate creationDate;
+   private double balance;
 
-    private LocalDate creationDate;
-
-    private Double balance;
+   public AccountDTO(){}
 
     public AccountDTO(Account account) {
         this.id = account.getId();
@@ -30,7 +30,7 @@ public class AccountDTO {
         return creationDate;
     }
 
-    public Double getBalance() {
+    public double getBalance() {
         return balance;
     }
 }
