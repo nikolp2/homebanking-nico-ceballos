@@ -9,15 +9,14 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-
     private Long id;
     private String firstName, lastName, mail;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private Set<Account> accounts = new HashSet<>();
 
-
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    private Set<ClientLoan> clientLoanSet = new HashSet<>();
 
     public Client(){};
 
@@ -29,6 +28,10 @@ public class Client {
         this.mail = mail;
     }
 
+    public void setClientLoanSet(Set<ClientLoan> clientLoanSet) {
+        this.clientLoanSet = clientLoanSet;
+    }
+
     public Set<Account> getAccounts(){
         return accounts;
     }
@@ -37,6 +40,10 @@ public class Client {
         account.setClient(this);
         accounts.add(account);
 
+    }
+
+    public Set<ClientLoan> getClientLoanSet() {
+        return clientLoanSet;
     }
 
     public void setAccounts(Set<Account> accounts) {
@@ -71,9 +78,7 @@ public class Client {
         this.mail = mail;
     }
 
-    /*public String toString(){
-        return firstName + " " + lastName;
-    }*/
+
 
 
 
