@@ -21,16 +21,23 @@ public class AccountController {
     AccountRepository accountRepository;
 
     @GetMapping("/")
-    public ResponseEntity<?> getAllAccounts(){
+    public ResponseEntity<List<AccountDTO>> getAllAccounts(){
+
         List<Account> accounts = accountRepository.findAll();
-        return new ResponseEntity<>(accounts.stream().map(AccountDTO::new).toList(), HttpStatus.OK);
+
+        return new ResponseEntity<>(accounts.stream()
+                                            .map(AccountDTO::new)
+                                            .toList(), HttpStatus.OK);
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> getAccountById(@PathVariable("id") Long id){
+    public ResponseEntity<AccountDTO> getAccountById(@PathVariable("id") Long id){
+
         Account account = accountRepository.findById(id).orElse(null);
+
         if(account == null) return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        AccountDTO accountDTO = new AccountDTO(account);
-        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
+
+        return new ResponseEntity<>(new AccountDTO(account), HttpStatus.OK);
     }
 }

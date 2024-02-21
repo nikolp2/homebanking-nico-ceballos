@@ -7,7 +7,6 @@ public class ClientLoan {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private double amount;
     private Integer payments;
 

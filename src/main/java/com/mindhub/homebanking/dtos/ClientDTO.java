@@ -1,6 +1,7 @@
 package com.mindhub.homebanking.dtos;
 
 import com.mindhub.homebanking.Models.Account;
+import com.mindhub.homebanking.Models.Card;
 import com.mindhub.homebanking.Models.Client;
 import com.mindhub.homebanking.Models.ClientLoan;
 
@@ -13,9 +14,9 @@ public class ClientDTO {
     private String firstName;
     private String lastName;
     private String mail;
-
     private Set<AccountDTO> accounts;
-    private Set<ClientLoanDTO> clientLoanDTOS;
+    private Set<ClientLoanDTO> loans;
+    private Set<CardDTO> cards;
 
     public ClientDTO(Client client){
         this.id = client.getId();
@@ -23,7 +24,8 @@ public class ClientDTO {
         this.lastName = client.getLastName();
         this.mail = client.getMail();
         this.accounts = accountDTOS(client.getAccounts());
-        this.clientLoanDTOS = clientLoanDTOS(client.getClientLoanSet());
+        this.loans = clientLoanDTOS(client.getClientLoanSet());
+        this.cards = cardDTOS(client.getCardSet());
     }
 
     private Set<ClientLoanDTO> clientLoanDTOS(Set<ClientLoan> clientLoanSet) {
@@ -35,12 +37,8 @@ public class ClientDTO {
 
     }
 
-    public Set<ClientLoanDTO> getClientLoanDTOS() {
-        return clientLoanDTOS;
-    }
-
-    public void setClientLoanDTOS(Set<ClientLoanDTO> clientLoanDTOS) {
-        this.clientLoanDTOS = clientLoanDTOS;
+    private Set<CardDTO> cardDTOS(Set<Card> cards){
+        return cards.stream().map(CardDTO::new).collect(Collectors.toSet());
     }
 
     public Long getId() {
@@ -51,15 +49,47 @@ public class ClientDTO {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getMail() {
         return mail;
     }
 
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
     public Set<AccountDTO> getAccounts() {
         return accounts;
+    }
+
+    public void setAccounts(Set<AccountDTO> accounts) {
+        this.accounts = accounts;
+    }
+
+    public Set<ClientLoanDTO> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(Set<ClientLoanDTO> loans) {
+        this.loans = loans;
+    }
+
+    public Set<CardDTO> getCards() {
+        return cards;
+    }
+
+    public void setCards(Set<CardDTO> cards) {
+        this.cards = cards;
     }
 }

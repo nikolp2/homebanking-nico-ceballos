@@ -1,5 +1,6 @@
 package com.mindhub.homebanking.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -15,18 +16,19 @@ public class Loan {
     private double maxAmount;
 
     @ElementCollection
-    private Set<Integer> payment = new HashSet<>();
+    private Set<Integer> payments = new HashSet<>();
 
     @OneToMany(mappedBy = "loan", fetch = FetchType.EAGER)
     private Set<ClientLoan> clientLoanSet =new HashSet<>();
 
     public Loan(){}
 
-    public Loan(String name, double maxAmount, Set<Integer> payment) {
+    public Loan(String name, double maxAmount, Set<Integer> payments) {
         this.name = name;
         this.maxAmount = maxAmount;
-        this.payment = payment;
+        this.payments = payments;
     }
+
 
     public Set<ClientLoan> getClientLoanSet() {
         return clientLoanSet;
@@ -57,16 +59,12 @@ public class Loan {
     }
 
     public Set<Integer> getPayment() {
-        return payment;
+        return payments;
     }
 
     public void setPayment(Set<Integer> payment) {
-        this.payment = payment;
+        this.payments = payment;
     }
 
-    @Embeddable
-    public class Payment{
-        private double maxAmount;
-        private int installment;
-    }
+
 }
