@@ -10,7 +10,7 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName, lastName, mail;
+    private String firstName, lastName, mail, password;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private Set<Account> accounts = new HashSet<>();
@@ -29,6 +29,7 @@ public class Client {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mail = mail;
+        this.password = password;
     }
 
     public void setClientLoanSet(Set<ClientLoan> clientLoanSet) {
@@ -89,5 +90,13 @@ public class Client {
 
     public Set<Card> getCardSet() {
         return cards;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
