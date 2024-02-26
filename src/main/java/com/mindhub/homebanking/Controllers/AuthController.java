@@ -56,9 +56,9 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO){
         Client client = new Client(
-                registerDTO.firstName(),
-                registerDTO.lastName(),
-                registerDTO.mail(),
+                registerDTO.getFirstName(),
+                registerDTO.getLastName(),
+                registerDTO.getMail(),
                 passwordEncoder.encode(registerDTO.password())
         );
 

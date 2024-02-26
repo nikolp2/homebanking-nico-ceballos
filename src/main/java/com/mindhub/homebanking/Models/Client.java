@@ -23,8 +23,6 @@ public class Client {
 
     public Client(){};
 
-
-
     public Client(String firstName, String lastName, String mail){
         this.firstName = firstName;
         this.lastName = lastName;

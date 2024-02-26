@@ -28,9 +28,9 @@ public class CorsConfiguration extends org.springframework.web.cors.CorsConfigur
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.SetAllowedOrigins(Arrays.asList("https://localhost:4200", "https://localhost:300"));
+        configuration.setAllowedOrigins(Arrays.asList("https://localhost:4200", "https://localhost:300"));
 
-        configuration.SetAllowedOrigins(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedOrigins(Arrays.asList("GET", "POST", "PUT", "DELETE"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
