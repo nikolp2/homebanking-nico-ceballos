@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,20 +25,21 @@ public class HomebankingApplication {
 									  TransactionRepository transactionRepository,
 									  LoanRepository loanRepository,
 									  ClientLoanRepository clientLoanRepository,
-									  CardRepository cardRepository){
+									  CardRepository cardRepository,
+									  PasswordEncoder passwordEncoder){
 		return args -> {
 
-			Client client1 =new Client( "Melba", "Morel", "melba@mindhub.com");
-			Client client2 =new Client( "Sonrisas", "Sonya", "sonrisas@mindhub.com");
-			Client client3 =new Client( "Tentación", "Roberto", "tentacion@mindhub.com");
+			Client client1 =new Client( "Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("123"));
+			Client client2 =new Client( "Sonrisas", "Sonya", "sonrisas@mindhub.com",passwordEncoder.encode("123"));
+			Client client3 =new Client( "Tentación", "Roberto", "tentacion@mindhub.com", passwordEncoder.encode("123"));
 
-			Client client4 = new Client("Rodesia","salada","mail@mail.mai");
+
 
 
             clientRepository.save(client1);
 			clientRepository.save(client2);
 			clientRepository.save(client3);
-			clientRepository.save(client4);
+
 
 			Account account1=new Account("VIN-001", LocalDate.now(), 550.23);
 			Account account2=new Account("VIN-002", LocalDate.now(), 4550.23);
@@ -70,7 +72,7 @@ public class HomebankingApplication {
 
 			newLoan1.setClient(client1);
 			newLoan2.setClient(client1);
-			newLoan3.setClient(client4);
+
 
 			newLoan1.setLoan(loan1);
 			newLoan2.setLoan(loan2);

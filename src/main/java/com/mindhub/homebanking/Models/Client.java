@@ -23,7 +23,7 @@ public class Client {
 
     public Client(){};
 
-    public Client(String firstName, String lastName, String mail){
+    public Client(String firstName, String lastName, String mail, String password){
         this.firstName = firstName;
         this.lastName = lastName;
         this.mail = mail;

@@ -8,7 +8,6 @@ import com.mindhub.homebanking.dtos.RegisterDTO;
 import com.mindhub.homebanking.services.JwtUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,7 +41,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.password()));
 
-            final UserDetails userDetails = UserDetailsService.loadUserByUsername(loginDTO.user());
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.user());
 
             final String jwt = jwtUtilService.generateToken(userDetails);
 
@@ -59,18 +58,20 @@ public class AuthController {
                 registerDTO.getFirstName(),
                 registerDTO.getLastName(),
                 registerDTO.getMail(),
-                passwordEncoder.encode(registerDTO.password())
+                passwordEncoder.encode(registerDTO.getPassword())
         );
 
         clientRepository.save(client);
+
         return ResponseEntity.ok(client);
     }
 
-    @GetMapping("/current")
-    public ResponseEntity<?> getClient(){
-        String userMail = SecurityContextHolder.getContext().getAuthentication().getName();
-        Client client = clientRepository.findByEmail(userMail);
 
-        return ResponseEntity.ok(new ClientDTO(client));
+
+    @GetMapping("/test")
+    public ResponseEntity<?> test(){
+        String mail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return  ResponseEntity.ok("hello" +mail);
     }
 }

@@ -6,6 +6,7 @@ import com.mindhub.homebanking.dtos.ClientDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,14 @@ public class ClientController {
         }
         ClientDTO clientDTO = new ClientDTO(client);
         return new ResponseEntity<>(clientDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<?> getClient(){
+        String userMail = SecurityContextHolder.getContext().getAuthentication().getName();
+        Client client = clientRepository.findByEmail(userMail);
+
+        return ResponseEntity.ok(new ClientDTO(client));
     }
 }
 
