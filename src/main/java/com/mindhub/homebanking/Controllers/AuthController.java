@@ -1,8 +1,9 @@
 package com.mindhub.homebanking.Controllers;
 
+import com.mindhub.homebanking.Models.Account;
 import com.mindhub.homebanking.Models.Client;
+import com.mindhub.homebanking.Repositories.AccountRepository;
 import com.mindhub.homebanking.Repositories.ClientRepository;
-import com.mindhub.homebanking.dtos.ClientDTO;
 import com.mindhub.homebanking.dtos.LoginDTO;
 import com.mindhub.homebanking.dtos.RegisterDTO;
 import com.mindhub.homebanking.services.JwtUtilService;
@@ -16,6 +17,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -36,12 +40,16 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AccountRepository AccountRepository;
+
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.user(), loginDTO.password()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.email(), loginDTO.password()));
 
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.user());
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.email());
 
             final String jwt = jwtUtilService.generateToken(userDetails);
 
@@ -63,7 +71,16 @@ public class AuthController {
 
         clientRepository.save(client);
 
-        return ResponseEntity.ok(client);
+        String accountNumber = "VIN-" + String.format("%08d", new Random().nextInt(1000000000));
+
+        if (!AccountRepository.existByNumber(accountNumber)){
+            Account account = new Account(accountNumber, LocalDate.now(), 0.0);
+
+            account.setClient(client);
+            AccountRepository.save(account);
+        }
+
+        return ResponseEntity.ok("user created successfully!" + client);
     }
 
 
@@ -72,6 +89,6 @@ public class AuthController {
     public ResponseEntity<?> test(){
         String mail = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return  ResponseEntity.ok("hello" +mail);
+        return  ResponseEntity.ok("hello" + mail);
     }
 }

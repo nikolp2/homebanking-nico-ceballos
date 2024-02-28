@@ -37,7 +37,7 @@ public class JwtUtilService {
     private Boolean isTokenExpired(String token){
         return extractExpiration(token).before(new Date());
     }
-
+                                                                                          //LocalDateTime.now()
     public Boolean validateToken(String token, UserDetails userDetails){
         final String username = extractUserName(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
@@ -48,6 +48,7 @@ public class JwtUtilService {
 
         var role = userDetails.getAuthorities().stream().toList().get(0);
         //se puede remplazar por getAuthorities().iterator().next()
+
         claims.put("role", role);
         return createToken(claims,userDetails.getUsername());
     }

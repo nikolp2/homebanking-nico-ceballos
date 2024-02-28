@@ -1,5 +1,5 @@
 package com.mindhub.homebanking.dtos;
 
-public record LoginDTO(String user, String password) {
+public record LoginDTO(String email, String password) {
 
 }

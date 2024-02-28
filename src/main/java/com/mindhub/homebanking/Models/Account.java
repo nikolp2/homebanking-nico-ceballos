@@ -25,7 +25,7 @@ public class Account {
     public Account(){};
 
     public Account(String number, LocalDate creationDate, Double balance){
-        this.number = number;
+        this.number = getNumber();
         this.creationDate = creationDate;
         this.balance = balance;
     }
@@ -79,4 +79,6 @@ public class Account {
     public void setClient(Client client) {
         this.client = client;
     }
+
+
 }

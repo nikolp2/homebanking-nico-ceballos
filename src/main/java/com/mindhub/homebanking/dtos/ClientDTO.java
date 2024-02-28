@@ -22,7 +22,7 @@ public class ClientDTO {
         this.id = client.getId();
         this.firstName = client.getFirstName();
         this.lastName = client.getLastName();
-        this.mail = client.getMail();
+        this.mail = client.getEmail();
         this.accounts = accountDTOS(client.getAccounts());
         this.loans = clientLoanDTOS(client.getClientLoanSet());
         this.cards = cardDTOS(client.getCardSet());
