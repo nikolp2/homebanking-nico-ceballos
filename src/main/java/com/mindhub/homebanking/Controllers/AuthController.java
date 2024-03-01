@@ -73,7 +73,7 @@ public class AuthController {
 
         String accountNumber = "VIN-" + String.format("%08d", new Random().nextInt(1000000000));
 
-        if (!AccountRepository.existByNumber(accountNumber)){
+        if (!AccountRepository.findByNumber(accountNumber)){
             Account account = new Account(accountNumber, LocalDate.now(), 0.0);
 
             account.setClient(client);
