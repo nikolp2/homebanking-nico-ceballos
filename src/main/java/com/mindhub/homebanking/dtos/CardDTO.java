@@ -11,7 +11,7 @@ public class CardDTO {
     private String cardHolder;
     private CardType type;
     private CardColor color;
-    private Long number;
+    private Long cardNumber;
     private int cvv;
     private LocalDate fromDate;
     private LocalDate thruDate;
@@ -21,7 +21,7 @@ public class CardDTO {
         this.cardHolder = card.getCardHolder();
         this.type = card.getType();
         this.color = card.getColor();
-        this.number = card.getNumber();
+        this.cardNumber = card.getNumber();
         this.cvv = card.getCvv();
         this.fromDate = card.getFromDate();
         this.thruDate = card.getThruDate();
@@ -43,8 +43,8 @@ public class CardDTO {
         return color;
     }
 
-    public String getNumber() {
-        String numberStr = String.valueOf(number);
+    public String getCardNumber() {
+        String numberStr = String.valueOf(cardNumber);
         return numberStr.replaceAll("(\\d{4})(\\d{4})(\\d{4})(\\d{4})",
                                     "$1-$2-$3-$4");
     }

@@ -44,6 +44,11 @@ public class Client {
 
     }
 
+    public void addCard(Card card){
+        card.setClient(this);
+        cards.add(card);
+    }
+
 
 
     public Set<ClientLoan> getClientLoanSet() {
