@@ -39,31 +39,31 @@ public class TransactionController {
         String userMail = SecurityContextHolder.getContext().getAuthentication().getName();
         Client currentClient = clientRepository.findByEmail(userMail);
 
-        if(!accountRepository.findByNumber(newTransactionDTO.numberDestinationAcc())) {
-            return new ResponseEntity<>("the destination account does not exist", HttpStatus.FORBIDDEN);
-        }
-
-        if(!accountRepository.findByNumber(newTransactionDTO.numberOriginAcc())) {
+        if(!accountRepository.findByNumber(newTransactionDTO.originAccountNumber())) {
             return new ResponseEntity<>("the origin account does not exist", HttpStatus.FORBIDDEN);
         }
 
-        if(newTransactionDTO.numberDestinationAcc().isBlank()) {
-            return new ResponseEntity<>("The destination number field must not be empty " , HttpStatus.FORBIDDEN);
+        if(!accountRepository.findByNumber(newTransactionDTO.destinationAccountNumber())) {
+            return new ResponseEntity<>("the destination account does not exist", HttpStatus.FORBIDDEN);
         }
 
-        if(newTransactionDTO.numberOriginAcc().isBlank()) {
+        if(newTransactionDTO.originAccountNumber().isBlank()) {
             return new ResponseEntity<>("The origin number field must not be empty " , HttpStatus.FORBIDDEN);
         }
 
+        if(newTransactionDTO.destinationAccountNumber().isBlank()) {
+            return new ResponseEntity<>("The destination number field must not be empty " , HttpStatus.FORBIDDEN);
+        }
+
         if(newTransactionDTO.amount() == null || newTransactionDTO.amount().toString().isBlank()) {
-            return new ResponseEntity<>("The mount field must not be empty " , HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The amount field must not be empty " , HttpStatus.FORBIDDEN);
         }
 
         if(newTransactionDTO.description().isBlank()) {
             return new ResponseEntity<>("The description field must not be empty " , HttpStatus.FORBIDDEN);
         }
 
-        if(!accountRepository.existsAccountByNumberAndClient(newTransactionDTO.numberOriginAcc(), currentClient)) {
+        if(!accountRepository.existsAccountByNumberAndClient(newTransactionDTO.originAccountNumber(), currentClient)) {
             return new ResponseEntity<>("You are not the owner of the source account", HttpStatus.FORBIDDEN);
         }
 
@@ -71,32 +71,36 @@ public class TransactionController {
             return new ResponseEntity<>("You cannot transfer an amount equal to or less than zero", HttpStatus.FORBIDDEN);
         }
 
-        if(newTransactionDTO.numberOriginAcc().equals(newTransactionDTO.numberDestinationAcc())) {
+        if(newTransactionDTO.originAccountNumber().equals(newTransactionDTO.destinationAccountNumber())) {
             return new ResponseEntity<>("the account numbers are the same, enter a different account destination number", HttpStatus.FORBIDDEN);
         }
 
-        if(accountRepository.findAccountByNumberAndClient(newTransactionDTO.numberOriginAcc(), currentClient)
+        if(accountRepository.findAccountByNumberAndClient(newTransactionDTO.originAccountNumber(), currentClient)
                 .getBalance() < newTransactionDTO.amount()) {
-            return new ResponseEntity<>("You do not have enough amount to carry out the transaction", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("You do not have enough money to carry out the transaction", HttpStatus.FORBIDDEN);
         }
 
         Transaction transactionDebit = new Transaction(newTransactionDTO.amount(), newTransactionDTO.description(), LocalDateTime.now(), TransactionType.DEBIT);
 
         Transaction transactionCredit = new Transaction(newTransactionDTO.amount(), newTransactionDTO.description(), LocalDateTime.now(), TransactionType.CREDIT);
 
-        Account accountOrigin = accountRepository.findAccountByNumberAndClient(newTransactionDTO.numberOriginAcc(), currentClient);
-        accountOrigin.setBalance(accountOrigin.getBalance() - newTransactionDTO.amount());
-        accountOrigin.addTransaction(transactionDebit);
+        //debitamos el monto
+        Account originAccount = accountRepository.findAccountByNumberAndClient(newTransactionDTO.originAccountNumber(), currentClient);
+        originAccount.setBalance(originAccount.getBalance() - newTransactionDTO.amount());
 
-        Account accountDestination = accountRepository.findAccountByNumber(newTransactionDTO.numberDestinationAcc());
+        originAccount.addTransaction(transactionDebit);
+
+        //acreditamos el monto
+        Account accountDestination = accountRepository.findAccountByNumber(newTransactionDTO.destinationAccountNumber());
         accountDestination.setBalance(accountDestination.getBalance() + newTransactionDTO.amount());
+
         accountDestination.addTransaction(transactionCredit);
 
-        accountRepository.save(accountOrigin);
+        accountRepository.save(originAccount);
         accountRepository.save(accountDestination);
 
         transactionRepository.save(transactionDebit);
-        transactionRepository.save(transactionCredit); //Probar acá con null
+        transactionRepository.save(transactionCredit);
 
         return new ResponseEntity<>("transaction created successfully", HttpStatus.CREATED);
     }

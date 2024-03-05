@@ -71,11 +71,11 @@ public class ClientController {
         }
 
         // Generar un número de cuenta aleatorio
-        String accountNumber = generateRandomAccountNumber();
+        String number = generateRandomAccountNumber();
 
         // Crear una nueva cuenta
         Account account = new Account();
-        account.setNumber(accountNumber);
+        account.setNumber(number);
         account.setBalance(0);
         account.setClient(client);
 
@@ -84,11 +84,7 @@ public class ClientController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Account created successfully!");
     }
-    private String generateRandomAccountNumber() {
-        Random random = new Random();
-        int randomNumber = random.nextInt(90000000) + 10000000; // Generar un número aleatorio de 8 dígitos
-        return "VIN-" + randomNumber;
-    }
+
 
     @GetMapping("/current/accounts")
     public ResponseEntity<?> getAllAccountsForClient() {
@@ -106,6 +102,7 @@ public class ClientController {
 
     @PostMapping("/current/cards")
     public ResponseEntity<?> createCard(@RequestBody TypeAndColorDTO typeAndColorDTO) {
+
         // Obtener la información del cliente autenticado
         String userMail = SecurityContextHolder.getContext().getAuthentication().getName();
         Client client = clientRepository.findByEmail(userMail);
@@ -129,14 +126,15 @@ public class ClientController {
         }
 
         // Verificar si el cliente ya tiene una tarjeta del color especificado
-        boolean hasCardWithColor = client.getCardSet().stream()
+        boolean hasThatCardColor = client.getCardSet().stream()
                 .anyMatch(card -> card.getColor() == typeAndColorDTO.cardColor());
-        if (hasCardWithColor) {
+        if (hasThatCardColor) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You already have a: " + typeAndColorDTO.cardColor() + " card.");
         }
 
         // Generar los detalles de la tarjeta
         long generateCardNumber = Long.parseLong(generateCardNumber());
+
         String cardholder = client.getFirstName() + " " + client.getLastName();
         int cvv = generateCVV();
         LocalDate startDate = LocalDate.now();
@@ -146,15 +144,14 @@ public class ClientController {
         Card card = new Card(client, typeAndColorDTO.cardType(), typeAndColorDTO.cardColor(),  generateCardNumber, cvv, startDate, expirationDate);
         client.addCard(card);
 
-        // Guardar la tarjeta en la lista de tarjetas del cliente
         clientRepository.save(client);
 
-        // Construir y devolver el DTO de la tarjeta creada
+
         CardDTO cardDTO = new CardDTO(card);
         return ResponseEntity.status(HttpStatus.CREATED).body(cardDTO);
     }
 
-    // Métodos para generar un número de tarjeta y un CVV aleatorios
+    // Métodos para generar un número de tarjeta, CVV y el número de cuenta de manera aleatoria
     private String generateCardNumber() {
         Random random = new Random();
         StringBuilder cardNumber = new StringBuilder();
@@ -171,7 +168,13 @@ public class ClientController {
 
     private int generateCVV() {
         Random random = new Random();
-        return 100 + random.nextInt(900); // Genera un número aleatorio de 3 dígitos
+        return 100 + random.nextInt(900);
+    }
+
+    private String generateRandomAccountNumber() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(90000000) + 10000000; // Generar un número aleatorio de 8 dígitos
+        return "VIN-" + randomNumber;
     }
 
 

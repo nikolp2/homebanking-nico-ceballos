@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 @Entity
@@ -25,7 +26,7 @@ public class Account {
     public Account(){};
 
     public Account(String number, LocalDate creationDate, Double balance){
-        this.number = getNumber();
+        this.number = accountNumber;
         this.creationDate = creationDate;
         this.balance = balance;
     }
@@ -80,5 +81,11 @@ public class Account {
         this.client = client;
     }
 
+    String accountNumber = generateRandomAccountNumber();
 
+    private String generateRandomAccountNumber() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(90000000) + 10000000; // Generar un número aleatorio de 8 dígitos
+        return "VIN-" + randomNumber;
+    }
 }
