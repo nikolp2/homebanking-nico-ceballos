@@ -38,19 +38,6 @@ public class Client {
         return accounts;
     }
 
-    public void addAccount(Account account){
-        account.setClient(this);
-        accounts.add(account);
-
-    }
-
-    public void addCard(Card card){
-        card.setClient(this);
-        cards.add(card);
-    }
-
-
-
     public Set<ClientLoan> getClientLoanSet() {
         return clientLoanSet;
     }
@@ -101,5 +88,20 @@ public class Client {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void addAccount(Account account){
+        account.setClient(this);
+        accounts.add(account);
+    }
+
+    public void addCard(Card card){
+        card.setClient(this);
+        cards.add(card);
+    }
+
+    public void addClientLoan(ClientLoan clientLoan){
+        clientLoan.setClient(this);
+        clientLoanSet.add(clientLoan);
     }
 }
