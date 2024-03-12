@@ -50,7 +50,7 @@ public class HomebankingApplication {
             accountRepository.save(account2);
 
             Transaction transaction1 = new Transaction(-5000.34, "E-bay", LocalDateTime.now(), TransactionType.DEBIT);
-            Transaction transaction2 = new Transaction(-5000.34, "E-bay", LocalDateTime.now(), TransactionType.DEBIT);
+            Transaction transaction2 = new Transaction(-1200, "E-bay", LocalDateTime.now(), TransactionType.DEBIT);
 
 			account1.addTransaction(transaction1);
 			account2.addTransaction(transaction2);
@@ -83,7 +83,7 @@ public class HomebankingApplication {
 			clientLoanRepository.save(newLoan3);
 
 			Card card1 = new Card(client1, CardType.CREDIT,CardColor.GOLD, 3325674578764445L, 623, LocalDate.now(), LocalDate.of(2029, 11, 20));
-			Card card2 = new Card(client1, CardType.CREDIT,CardColor.TITANIUM, 5585814620203698L, 623, LocalDate.now(), LocalDate.of(2029, 11, 20));
+			Card card2 = new Card(client1, CardType.CREDIT,CardColor.TITANIUM, 5585814620203698L, 852, LocalDate.now(), LocalDate.of(2029, 11, 20));
 			card1.setClient(client1);
 			card2.setClient(client1);
 
